@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Destroyable | amazon-chime-sdk-js</title>
+	<title>EventObserver | amazon-chime-sdk-js</title>
 	<meta name="description" content="Documentation for amazon-chime-sdk-js">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,51 +56,22 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="destroyable.html">Destroyable</a>
+					<a href="eventobserver.html">EventObserver</a>
 				</li>
 			</ul>
-			<h1>Interface Destroyable</h1>
+			<h1>Interface EventObserver</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>An interface for objects that require manual cleanup.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Destroyable</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="videoframeprocessor.html" class="tsd-signature-type">VideoFrameProcessor</a>
-							</li>
-						</ul>
+						<span class="target">EventObserver</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implemented by</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../classes/defaultactivespeakerdetector.html" class="tsd-signature-type">DefaultActiveSpeakerDetector</a></li>
-					<li><a href="../classes/defaultaudiovideocontroller.html" class="tsd-signature-type">DefaultAudioVideoController</a></li>
-					<li><a href="../classes/defaultcontentsharecontroller.html" class="tsd-signature-type">DefaultContentShareController</a></li>
-					<li><a href="../classes/defaultdevicecontroller.html" class="tsd-signature-type">DefaultDeviceController</a></li>
-					<li><a href="../classes/defaultdevicepixelratiomonitor.html" class="tsd-signature-type">DefaultDevicePixelRatioMonitor</a></li>
-					<li><a href="../classes/defaulteventcontroller.html" class="tsd-signature-type">DefaultEventController</a></li>
-					<li><a href="../classes/defaultmeetingeventreporter.html" class="tsd-signature-type">DefaultMeetingEventReporter</a></li>
-					<li><a href="../classes/defaultmeetingsession.html" class="tsd-signature-type">DefaultMeetingSession</a></li>
-					<li><a href="../classes/destroyablenoopdevicecontroller.html" class="tsd-signature-type">DestroyableNoOpDeviceController</a></li>
-					<li><a href="../classes/inmemoryjsoneventbuffer.html" class="tsd-signature-type">InMemoryJSONEventBuffer</a></li>
-					<li><a href="../classes/meetingsessionpostlogger.html" class="tsd-signature-type">MeetingSessionPOSTLogger</a></li>
-					<li><a href="../classes/noopaudiovideocontroller.html" class="tsd-signature-type">NoOpAudioVideoController</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -110,7 +81,7 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="destroyable.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="eventobserver.html#eventdidreceive" class="tsd-kind-icon">event<wbr>Did<wbr>Receive</a></li>
 							</ul>
 						</section>
 					</div>
@@ -119,24 +90,34 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="destroy" class="tsd-anchor"></a>
-					<h3>destroy</h3>
+					<a name="eventdidreceive" class="tsd-anchor"></a>
+					<h3>event<wbr>Did<wbr>Receive</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">destroy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">event<wbr>Did<wbr>Receive<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><a href="../globals.html#eventname" class="tsd-signature-type">EventName</a>, attributes<span class="tsd-signature-symbol">: </span><a href="eventattributes.html" class="tsd-signature-type">EventAttributes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aws/amazon-chime-sdk-js/blob/main/src/destroyable/Destroyable.ts#L11">src/destroyable/Destroyable.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/aws/amazon-chime-sdk-js/blob/main/src/eventobserver/EventObserver.ts#L12">src/eventobserver/EventObserver.ts:12</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Dispose of this instance. The instance cannot be used after this method has been called.</p>
+									<p>Called when specific events occur during the SDK session and includes attributes of the event. Example: This can be used to
+									create analytics around meeting metrics.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <a href="../globals.html#eventname" class="tsd-signature-type">EventName</a></h5>
+								</li>
+								<li>
+									<h5>attributes: <a href="eventattributes.html" class="tsd-signature-type">EventAttributes</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -155,10 +136,10 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="destroyable.html" class="tsd-kind-icon">Destroyable</a>
+						<a href="eventobserver.html" class="tsd-kind-icon">Event<wbr>Observer</a>
 						<ul>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="destroyable.html#destroy" class="tsd-kind-icon">destroy</a>
+								<a href="eventobserver.html#eventdidreceive" class="tsd-kind-icon">event<wbr>Did<wbr>Receive</a>
 							</li>
 						</ul>
 					</li>

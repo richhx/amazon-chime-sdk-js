@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { EventController } from '..';
 import Destroyable from '../destroyable/Destroyable';
 import DeviceChangeObserver from '../devicechangeobserver/DeviceChangeObserver';
 import DeviceControllerBasedMediaStreamBroker from '../mediastreambroker/DeviceControllerBasedMediaStreamBroker';
@@ -68,6 +69,23 @@ export default class NoOpDeviceController
 
   getVideoInputQualitySettings(): VideoQualitySettings | null {
     return null;
+  }
+  getEventController(): EventController {
+    return null;
+  }
+  setEventController(_eventController: EventController): void {}
+}
+export class NoOpDeviceControllerWithEventController extends NoOpDeviceController {
+  eventController: EventController;
+  constructor(eventController: EventController) {
+    super();
+    this.eventController = eventController;
+  }
+  getEventController(): EventController {
+    return this.eventController;
+  }
+  setEventController(eventController: EventController): void {
+    this.eventController = eventController;
   }
 }
 

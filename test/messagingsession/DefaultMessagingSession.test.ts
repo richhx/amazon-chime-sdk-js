@@ -58,7 +58,7 @@ describe('DefaultMessagingSession', () => {
       hostname: string,
       _path: string,
       _payload: string,
-      _queryParams: Map<string, string[]>
+      _queryParams: Map<string, string[]> | null
     ): string {
       return hostname;
     }

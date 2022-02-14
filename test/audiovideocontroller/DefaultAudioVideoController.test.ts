@@ -1050,13 +1050,6 @@ describe('DefaultAudioVideoController', () => {
 
       const result = new Promise((resolve, _reject) => {
         class TestObserver implements AudioVideoObserver {
-          eventDidReceive(name: EventName, attributes: EventAttributes): void {
-            events.push({
-              name,
-              attributes,
-            });
-          }
-
           async audioVideoDidStop(sessionStatus: MeetingSessionStatus): Promise<void> {
             await delay(defaultDelay);
             expect(sessionStatus.statusCode()).to.equal(MeetingSessionStatusCode.TaskFailed);
@@ -1071,6 +1064,14 @@ describe('DefaultAudioVideoController', () => {
         }
 
         audioVideoController.addObserver(new TestObserver());
+        audioVideoController.eventController.addObserver({
+          eventDidReceive(name: EventName, attributes: EventAttributes): void {
+            events.push({
+              name,
+              attributes,
+            });
+          },
+        });
       });
 
       // Start and wait for the Join frame in JoinAndReceiveIndexTask.
@@ -2530,7 +2531,7 @@ describe('DefaultAudioVideoController', () => {
         reconnectController
       );
       const events: { name: EventName; attributes: EventAttributes }[] = [];
-      audioVideoController.addObserver({
+      audioVideoController.eventController.addObserver({
         eventDidReceive(name: EventName, attributes: EventAttributes): void {
           events.push({
             name,
@@ -3251,7 +3252,7 @@ describe('DefaultAudioVideoController', () => {
       );
 
       const events: { name: EventName; attributes: EventAttributes }[] = [];
-      audioVideoController.addObserver({
+      audioVideoController.eventController.addObserver({
         eventDidReceive(name: EventName, attributes: EventAttributes): void {
           events.push({
             name,
@@ -3282,7 +3283,7 @@ describe('DefaultAudioVideoController', () => {
 
       const errorMessage = 'Something went wrong';
       const events: { name: EventName; attributes: EventAttributes }[] = [];
-      audioVideoController.addObserver({
+      audioVideoController.eventController.addObserver({
         eventDidReceive(name: EventName, attributes: EventAttributes): void {
           events.push({
             name,
@@ -3318,7 +3319,7 @@ describe('DefaultAudioVideoController', () => {
       );
 
       const events: { name: EventName; attributes: EventAttributes }[] = [];
-      audioVideoController.addObserver({
+      audioVideoController.eventController.addObserver({
         eventDidReceive(name: EventName, attributes: EventAttributes): void {
           events.push({
             name,

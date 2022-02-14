@@ -13,11 +13,8 @@ import DefaultContentShareController from '../contentsharecontroller/DefaultCont
 import CSPMonitor from '../cspmonitor/CSPMonitor';
 import Destroyable, { isDestroyable } from '../destroyable/Destroyable';
 import DeviceController from '../devicecontroller/DeviceController';
-import EventIngestionConfiguration from '../eventingestionconfiguration/EventIngestionConfiguration';
-import DefaultMeetingEventReporter from '../eventreporter/DefaultMeetingEventReporter';
-import EventReporter from '../eventreporter/EventReporter';
-import EventsClientConfiguration from '../eventsclientconfiguration/EventsClientConfiguration';
-import MeetingEventsClientConfiguration from '../eventsclientconfiguration/MeetingEventsClientConfiguration';
+import DefaultEventController from '../eventcontroller/DefaultEventController';
+import EventController from '../eventcontroller/EventController';
 import Logger from '../logger/Logger';
 import DeviceControllerBasedMediaStreamBroker from '../mediastreambroker/DeviceControllerBasedMediaStreamBroker';
 import DefaultReconnectController from '../reconnectcontroller/DefaultReconnectController';
@@ -32,15 +29,15 @@ export default class DefaultMeetingSession implements MeetingSession, Destroyabl
   private _logger: Logger;
   private audioVideoController: AudioVideoController;
   private contentShareController: ContentShareController;
+  private _eventController: EventController;
   private _deviceController: DeviceController;
   private audioVideoFacade: AudioVideoFacade;
-  private _eventReporter: EventReporter;
 
   constructor(
     configuration: MeetingSessionConfiguration,
     logger: Logger,
     deviceController: DeviceControllerBasedMediaStreamBroker,
-    eventReporter?: EventReporter
+    eventController?: EventController
   ) {
     this._configuration = configuration;
     this._logger = logger;
@@ -49,9 +46,14 @@ export default class DefaultMeetingSession implements MeetingSession, Destroyabl
 
     CSPMonitor.addLogger(this._logger);
     CSPMonitor.register();
-
-    this.setupEventReporter(configuration, logger, eventReporter);
-    this._deviceController = deviceController;
+    if (eventController) {
+      this._eventController = eventController;
+    } else {
+      this._eventController = new DefaultEventController(configuration, logger);
+    }
+    if (!deviceController.getEventController()) {
+      deviceController.setEventController(this.eventController);
+    }
     this.audioVideoController = new DefaultAudioVideoController(
       this._configuration,
       this._logger,
@@ -65,8 +67,9 @@ export default class DefaultMeetingSession implements MeetingSession, Destroyabl
           this._configuration.reconnectLongBackOffMs
         )
       ),
-      this._eventReporter
+      this.eventController
     );
+    this._deviceController = deviceController;
     deviceController.bindToAudioVideoController(this.audioVideoController);
     const contentShareMediaStreamBroker = new ContentShareMediaStreamBroker(this._logger);
     this.contentShareController = new DefaultContentShareController(
@@ -119,8 +122,8 @@ export default class DefaultMeetingSession implements MeetingSession, Destroyabl
     return this._deviceController;
   }
 
-  get eventReporter(): EventReporter {
-    return this._eventReporter;
+  get eventController(): EventController {
+    return this._eventController;
   }
 
   /**
@@ -135,8 +138,8 @@ export default class DefaultMeetingSession implements MeetingSession, Destroyabl
     if (isDestroyable(this.audioVideoController)) {
       await this.audioVideoController.destroy();
     }
-    if (isDestroyable(this.eventReporter)) {
-      await this.eventReporter.destroy();
+    if (isDestroyable(this.eventController)) {
+      await this.eventController.destroy();
     }
 
     CSPMonitor.removeLogger(this._logger);
@@ -147,36 +150,7 @@ export default class DefaultMeetingSession implements MeetingSession, Destroyabl
     this.audioVideoFacade = undefined;
     this.audioVideoController = undefined;
     this.contentShareController = undefined;
-    this._eventReporter = undefined;
-  }
-
-  private setupEventReporter(
-    configuration: MeetingSessionConfiguration,
-    logger: Logger,
-    eventReporter?: EventReporter
-  ): void {
-    if (eventReporter) {
-      this._eventReporter = eventReporter;
-    } else {
-      const eventIngestionURL = configuration.urls.eventIngestionURL;
-      if (eventIngestionURL) {
-        this.logger.info(`Event ingestion URL is present in the configuration`);
-        const {
-          meetingId,
-          credentials: { attendeeId, joinToken },
-        } = configuration;
-        const meetingEventsClientConfiguration: EventsClientConfiguration = new MeetingEventsClientConfiguration(
-          meetingId,
-          attendeeId,
-          joinToken
-        );
-        const eventIngestionConfiguration = new EventIngestionConfiguration(
-          meetingEventsClientConfiguration,
-          eventIngestionURL
-        );
-        this._eventReporter = new DefaultMeetingEventReporter(eventIngestionConfiguration, logger);
-      }
-    }
+    this._eventController = undefined;
   }
 
   private checkBrowserSupportAndFeatureConfiguration(): void {
